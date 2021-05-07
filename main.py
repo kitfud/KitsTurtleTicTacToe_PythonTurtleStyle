@@ -43,6 +43,8 @@ def buildBoard():
   t.left(180)
   t.forward(300)
   t.penup()
+  t.goto(-100,-185)
+  t.write("CLICK TO PLAY!",font= ("Verdana",20,"bold"))
 buildBoard()
 
 board = []
@@ -144,7 +146,7 @@ def placeMarker(select):
 
 def zoneDetect(x,y):
   global clickSelect, player  
-  #print(x,y)
+  print(x,y)
   if (x >-150 and x<-50) and (y>50 and y<150):
     #print("0")
     placeMarker(0)
