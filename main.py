@@ -64,7 +64,7 @@ def check_for_three(board,s1,s2,s3):
 
 def changePlayer():
   global player,turns
-  os.system('clear')
+  #os.system('clear')
   if player ==1:
     player = 2
   else:
@@ -286,7 +286,7 @@ def placeMarker():
 
 def zoneDetect(x,y):
   global clickSelect, player  
-  #print(x,y)
+  print(x,y)
   if (x >=-150 and x<-50) and (y>50 and y<150):
     #print("0")
     clickSelect = 0
@@ -300,15 +300,15 @@ def zoneDetect(x,y):
     #print("2")
     clickSelect = 2
     placeMarker()
-  elif (x >=-150 and x<-50) and (y>-50 and y<=150):
+  elif (x >=-150 and x<-50) and (y>-50 and y<50):
     #print("3")
     clickSelect = 3
     placeMarker()
-  elif (x >=-50 and x<=50) and (y>-50 and y<=150):
+  elif (x >=-50 and x<=50) and (y>-50 and y<50):
     #print("4")
     clickSelect = 4
     placeMarker()
-  elif (x>50 and x<=150) and (y>-50 and y<150):
+  elif (x>50 and x<=150) and (y>-50 and y<50):
     #print("5")
     clickSelect = 5
     placeMarker()
