@@ -25,7 +25,6 @@ def buildBoard():
   for x in range (4):
     t.forward(300)
     t.left(90)
-
   #horizontal lines
   t.penup()
   t.goto(-150,-50)
@@ -34,7 +33,6 @@ def buildBoard():
   t.goto(150,50)
   t.left(180)
   t.forward(300)
-
   #vertical lines
   t.penup()
   t.goto(-50,150)
@@ -44,16 +42,17 @@ def buildBoard():
   t.goto(50,-150)
   t.left(180)
   t.forward(300)
-
   t.penup()
-
 buildBoard()
 
 board = []
+boardGridPos = {0:(-98,95),1:(-3,97),2:(98,100),3:(-105,-1),4:(-1,-3),5:(87,-2),6:(-104,-102),7:(1,-99),8:(92,-99)}
+
 player = 1
 board = [""]*9
 win = False
 turns = 1
+
 #Checking For Win
 #checks and sees if three in a row is there 
 def check_for_three(board,s1,s2,s3):
@@ -64,7 +63,7 @@ def check_for_three(board,s1,s2,s3):
 
 def changePlayer():
   global player,turns
-  #os.system('clear')
+  os.system('clear')
   if player ==1:
     player = 2
   else:
@@ -72,82 +71,51 @@ def changePlayer():
   print(f"Player {player} turn")
   turns += 1
 
+def drawWinLine(i1,i2,i3):
+  t.goto(boardGridPos[i1][0],boardGridPos[i1][1])
+  t.pendown()
+  t.goto(boardGridPos[i2][0],boardGridPos[i2][1])
+  t.goto(boardGridPos[i3][0],boardGridPos[i3][1])
+
+def announceWin():
+  t.goto(-15,177)
+  t.write("Player {} wins!".format(player))
 
 #check all combinations for win
 def check_win(board,player):
   global win
   if check_for_three(board, 0, 1, 2):
-    print("Player {} wins!".format(player))
     win = True
-    t.goto(-15,177)
-    t.write("Player {} wins!".format(player))
-    t.goto(-98,95)
-    t.pendown()
-    t.goto(-3,97)
-    t.goto(98,100) 
+    announceWin()
+    drawWinLine(0,1,2)
   elif check_for_three(board, 3, 4, 5):
-    print("Player {} wins!".format(player))
     win = True
-    t.goto(-15,177)
-    t.write("Player {} wins!".format(player))
-    t.goto(-105,-1)
-    t.pendown()
-    t.goto(-1,-3)
-    t.goto(87,-2)
+    announceWin()
+    drawWinLine(3,4,5)
   elif check_for_three(board, 6, 7, 8):
-    print("Player {} wins!".format(player))
     win = True
-    t.goto(-15,177)
-    t.write("Player {} wins!".format(player))
-    t.goto(-104,-102)
-    t.pendown()
-    t.goto(1,-99)
-    t.goto(92,-99)
+    announceWin()
+    drawWinLine(6,7,8)
   elif check_for_three(board, 0, 3, 6):
-    print("Player {} wins!".format(player))
     win = True
-    t.goto(-15,177)
-    t.write("Player {} wins!".format(player))
-    t.goto(-98,95)
-    t.pendown()
-    t.goto(-105,-1)
-    t.goto(-104,-102)
+    announceWin()
+    drawWinLine(0,3,6)
   elif check_for_three(board, 1, 4, 7):
-    print("Player {} wins!".format(player))
     win = True
-    t.goto(-15,177)
-    t.write("Player {} wins!".format(player))
-    t.goto(-3,97)
-    t.pendown()
-    t.goto(-1,-3)
-    t.goto(1,-99)
+    announceWin()
+    drawWinLine(1,4,7)
   elif check_for_three(board, 2, 5, 8):
-    print("Player {} wins!".format(player))
     win = True
-    t.goto(-15,177)
-    t.write("Player {} wins!".format(player))
-    t.goto(98,100)
-    t.pendown()
-    t.goto(87,-2)
-    t.goto(92,-99)
+    announceWin()
+    drawWinLine(2,5,8)
   elif check_for_three(board, 0, 4, 8):
-    print("Player {} wins!".format(player))
     win = True
-    t.goto(-15,177)
-    t.write("Player {} wins!".format(player))
-    t.goto(-98,95)
-    t.pendown()
-    t.goto(-1,-3)
-    t.goto(92,-99)
+    announceWin()
+    drawWinLine(0,4,8)
   elif check_for_three(board, 2, 4, 6):
-    print("Player {} wins!".format(player))
     win = True
-    t.goto(-15,177)
-    t.write("Player {} wins!".format(player))
-    t.goto(98,100)
-    t.pendown()
-    t.goto(-1,-3)
-    t.goto(-104,-102)
+    announceWin()
+    drawWinLine(2,4,6)
   else:
     if turns == 9:
       print("TIE GAME")
@@ -157,173 +125,53 @@ def check_win(board,player):
     else:
       changePlayer()  
   
-
-
-def placeMarker():
+def placeMarker(select):
   global player, clickSelect,board
-  #print(board)
   if win == False:
-    if clickSelect == 0:
-      if board[0] == "":
-        if player ==1:
-          board[0] = "x"
-          t.goto(-98,95)
-          t.write("x")
-
-        else:
-          board[0] = "o"
-          t.goto(-98,95)
-          t.write("o")
+    if board[select] == "":
+      if player ==1:
+        board[select] = "x"
+        t.goto(boardGridPos[select][0],boardGridPos[select][1])
+        t.write("x",font= ("Verdana",20,"bold"))
       else:
-        print("click a new square")
-        return 
-    elif clickSelect == 1:
-      if board[1] == "":
-        if player ==1:
-          board[1] = "x"
-          t.goto(-3,97)
-          t.write("x")
-        else:
-          board[0] = "o"
-          t.goto(-3,97)
-          t.write("o")
-      else:
-        print("click a new square")
-        return 
-    elif clickSelect == 2:
-      if board[2] == "":
-        if player ==1:
-          board[2] = "x"
-          t.goto(98,100)
-          t.write("x")
-        else:
-          board[2] = "o"
-          t.goto(98,100)
-          t.write("o")
-      else:
-        print("click a new square")
-        return
-    
-    elif clickSelect == 3:
-      if board[3] == "":
-        if player ==1:
-          board[3] = "x"
-          t.goto(-105,-1)
-          t.write("x")
-        else:
-          board[3] = "o"
-          t.goto(-105,-1)
-          t.write("o")
-      else:
-        print("click a new square")
-        return
-    elif clickSelect == 4:
-      if board[4] == "":
-        if player ==1:
-          board[4] = "x"
-          t.goto(-1,-3)
-          t.write("x")
-        else:
-          board[4] = "o"
-          t.goto(-1,-3)
-          t.write("o")
-      else:
-        print("click a new square")
-        return
-    elif clickSelect == 5:
-      if board[5] == "":
-        if player ==1:
-          board[5] = "x"
-          t.goto(87,-2)
-          t.write("x")
-        else:
-          board[5] = "o"
-          t.goto(87,-2)
-          t.write("o")
-      else:
-        print("click a new square")
-        return
-    elif clickSelect == 6:
-      if board[6] == "":
-        if player ==1:
-          board[6] = "x"
-          t.goto(-104,-102)
-          t.write("x")
-        else:
-          board[6] = "o"
-          t.goto(-104,-102)
-          t.write("o")
-      else:
-        print("click a new square")
-        return
-    elif clickSelect == 7:
-      if board[7] == "":
-        if player ==1:
-          board[7] = "x"
-          t.goto(1,-99)
-          t.write("x")
-        else:
-          board[7] = "o"
-          t.goto(1,-99)
-          t.write("o")
-      else:
-        print("click a new square")
-        return
-    elif clickSelect == 8:
-      if board[8] == "":
-        if player ==1:
-          board[8] = "x"
-          t.goto(92,-99)
-          t.write("x")
-        else:
-          board[8] = "o"
-          t.goto(92,-99)
-          t.write("o")
-      else:
-        print("click a new square")
-        return
-    check_win(board,player)
+        board[select] = "o"
+        t.goto(boardGridPos[select][0],boardGridPos[select][1])
+        t.write("o",font= ("Verdana",20,"bold"))
+    else:
+      print("click a new square")
+      return   
+  check_win(board,player)
 
 def zoneDetect(x,y):
   global clickSelect, player  
-  print(x,y)
-  if (x >=-150 and x<-50) and (y>50 and y<150):
+  #print(x,y)
+  if (x >-150 and x<-50) and (y>50 and y<150):
     #print("0")
-    clickSelect = 0
-    placeMarker()
-
-  elif (x >=-50 and x<=50) and (y>50 and y<150):
+    placeMarker(0)
+  elif (x >-50 and x<50) and (y>50 and y<150):
     #print("1")
-    clickSelect = 1
-    placeMarker()
-  elif (x >50 and x<=150) and (y>50 and y<150):
+    placeMarker(1)
+  elif (x >50 and x<150) and (y>50 and y<150):
     #print("2")
-    clickSelect = 2
-    placeMarker()
-  elif (x >=-150 and x<-50) and (y>-50 and y<50):
+    placeMarker(2)
+  elif (x >-150 and x<-50) and (y>-50 and y<50):
     #print("3")
-    clickSelect = 3
-    placeMarker()
-  elif (x >=-50 and x<=50) and (y>-50 and y<50):
+    placeMarker(3)
+  elif (x >-50 and x<50) and (y>-50 and y<50):
     #print("4")
-    clickSelect = 4
-    placeMarker()
-  elif (x>50 and x<=150) and (y>-50 and y<50):
+    placeMarker(4)
+  elif (x>50 and x<150) and (y>-50 and y<50):
     #print("5")
-    clickSelect = 5
-    placeMarker()
-  elif (x >=-150 and x<-50) and (y>-150 and y<-50):
+    placeMarker(5)
+  elif (x >-150 and x<-50) and (y>-150 and y<-50):
     #print("6")
-    clickSelect = 6
-    placeMarker()
-  elif (x >=-50 and x<=50) and (y>-150 and y<-50):
+    placeMarker(6)
+  elif (x >-50 and x<50) and (y>-150 and y<-50):
     #print("7")
-    clickSelect = 7
-    placeMarker()
-  elif (x >50 and x<=150) and (y>-150 and y<-50):
+    placeMarker(7)
+  elif (x >50 and x<150) and (y>-150 and y<-50):
     #print("8")
-    clickSelect = 8
-    placeMarker()
+    placeMarker(8)
 
 turtle.onscreenclick(zoneDetect)
  
