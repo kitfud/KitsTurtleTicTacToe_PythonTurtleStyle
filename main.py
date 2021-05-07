@@ -1,9 +1,7 @@
-
 import turtle
 import time
 import os
 
-# getting a Screen to work on
 sc=turtle.Screen()
 sc.setup(420,420)
 # Defining Turtle instance
@@ -45,20 +43,21 @@ def buildBoard():
   t.penup()
   t.goto(-100,-185)
   t.write("CLICK TO PLAY!",font= ("Verdana",20,"bold"))
+
 buildBoard()
 
-board = []
 boardGridPos = {0:(-98,95),1:(-3,97),2:(98,100),3:(-105,-1),4:(-1,-3),5:(87,-2),6:(-104,-102),7:(1,-99),8:(92,-99)}
-
 player = 1
 board = [""]*9
 win = False
 turns = 1
+winState = ""
 
-#Checking For Win
 #checks and sees if three in a row is there 
 def check_for_three(board,s1,s2,s3):
+  global winState
   if(board[s1] != "" and board[s1] == board[s2] and board[s1]== board[s3]):
+    winState = (s1,s2,s3)
     return True
   else:
     return False
@@ -86,41 +85,12 @@ def announceWin():
 #check all combinations for win
 def check_win(board,player):
   global win
-  if check_for_three(board, 0, 1, 2):
+  if check_for_three(board, 0, 1, 2) or check_for_three(board, 3, 4, 5) or check_for_three(board, 6, 7, 8) or check_for_three(board, 0, 3, 6) or check_for_three(board, 1, 4, 7) or check_for_three(board, 2, 5, 8) or check_for_three(board, 0, 4, 8) or check_for_three(board, 2, 4, 6):
     win = True
     announceWin()
-    drawWinLine(0,1,2)
-  elif check_for_three(board, 3, 4, 5):
-    win = True
-    announceWin()
-    drawWinLine(3,4,5)
-  elif check_for_three(board, 6, 7, 8):
-    win = True
-    announceWin()
-    drawWinLine(6,7,8)
-  elif check_for_three(board, 0, 3, 6):
-    win = True
-    announceWin()
-    drawWinLine(0,3,6)
-  elif check_for_three(board, 1, 4, 7):
-    win = True
-    announceWin()
-    drawWinLine(1,4,7)
-  elif check_for_three(board, 2, 5, 8):
-    win = True
-    announceWin()
-    drawWinLine(2,5,8)
-  elif check_for_three(board, 0, 4, 8):
-    win = True
-    announceWin()
-    drawWinLine(0,4,8)
-  elif check_for_three(board, 2, 4, 6):
-    win = True
-    announceWin()
-    drawWinLine(2,4,6)
+    drawWinLine(winState[0],winState[1],winState[2])
   else:
     if turns == 9:
-      print("TIE GAME")
       t.goto(-15,177)
       t.write("TIE GAME".format(player))
       win = True
@@ -128,7 +98,7 @@ def check_win(board,player):
       changePlayer()  
   
 def placeMarker(select):
-  global player, clickSelect,board
+  global player,board
   if win == False:
     if board[select] == "":
       if player ==1:
@@ -148,31 +118,22 @@ def zoneDetect(x,y):
   global clickSelect, player  
   print(x,y)
   if (x >-150 and x<-50) and (y>50 and y<150):
-    #print("0")
     placeMarker(0)
   elif (x >-50 and x<50) and (y>50 and y<150):
-    #print("1")
     placeMarker(1)
   elif (x >50 and x<150) and (y>50 and y<150):
-    #print("2")
     placeMarker(2)
   elif (x >-150 and x<-50) and (y>-50 and y<50):
-    #print("3")
     placeMarker(3)
   elif (x >-50 and x<50) and (y>-50 and y<50):
-    #print("4")
     placeMarker(4)
   elif (x>50 and x<150) and (y>-50 and y<50):
-    #print("5")
     placeMarker(5)
   elif (x >-150 and x<-50) and (y>-150 and y<-50):
-    #print("6")
     placeMarker(6)
   elif (x >-50 and x<50) and (y>-150 and y<-50):
-    #print("7")
     placeMarker(7)
   elif (x >50 and x<150) and (y>-150 and y<-50):
-    #print("8")
     placeMarker(8)
 
 turtle.onscreenclick(zoneDetect)
