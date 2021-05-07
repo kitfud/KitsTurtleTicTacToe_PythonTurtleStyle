@@ -286,7 +286,7 @@ def placeMarker():
 
 def zoneDetect(x,y):
   global clickSelect, player  
-  print(x,y)
+  #print(x,y)
   if (x >=-150 and x<-50) and (y>50 and y<150):
     #print("0")
     clickSelect = 0
